@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/principal :: head}"></head>
+
+<body>
+	<nav th:replace="~{plantillas/principal :: nav}"></nav>
+	<div th:replace="~{plantillas/principal :: mensajes}"></div>
+	<div class="container-fluid py-4 col-sm-9">
+		<div class="card bg-light">
+			<div class="card-header bg-dark text-white">
+				<h3 th:text="${titulo}"></h3>
+			</div>
+			<div class="card-body">
+				<form method="POST" th:object="${prestamo}" th:action="@{/libreria/agregarprestamo}">
+
+					<div class="form-group">
+						<label>Fecha devolucion</label>
+						<input type="text" th:field="*{fechaDevolucion}" class="form-control form-control-sm"
+							placeholder="aaaa/mm/dd" />
+						<small class="form-text text-danger" th:if="${#fields.hasErrors('fechaDevolucion')}"
+							th:errors="*{fechaDevolucion}"></small>
+					</div>
+
+					<div class="form-group">
+						<label class="text-dark">Observacion:</label>
+						<textarea type="text" th:field="*{observacion}" class="form-control form-control-sm"></textarea>
+						<small class="form-text text-danger" th:if="${#fields.hasErrors('observacion')}"
+							th:errors="*{observacion}"></small>
+					</div>
+
+					<div class="mb-4 row">
+						<label class="col-sm-2 col-form-label" for="buscar_libro" th:text="'Buscar libro'"></label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" th:id="buscar_libro" th:name="buscar_libro" />
+						</div>
+					</div>
+
+					<table th:replace="~{plantillas/plantilla_detalles :: detalle_prestamo}"></table>
+
+					<table id="cargar_detalle" class="table table-striped table table-hover">
+						<thead>
+							<tr>
+								<th>Título</th>
+								<th>Edición</th>
+								<th>Tema</th>
+								<th>Año</th>
+								<th>Nro. páginas</th>
+								<th>Caratula</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div>
+						<input type="submit" th:value="${accion}" class="btn btn-success" />
+						<a class="btn btn-outline-dark" onclick="history.back()">Regresar</a>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="~{plantillas/principal :: footer}"></footer>
+	<script th:replace="~{plantillas/autocompleta_libro :: script}"></script>
+</body>
+
+</html>

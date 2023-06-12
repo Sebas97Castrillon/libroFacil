@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/principal :: head}"></head>
+
+<body>
+	<nav th:replace="~{plantillas/principal :: nav}"></nav>
+	<div th:replace="~{plantillas/principal :: mensajes}"></div>
+	<div class="d-flex justify-content-center p-5">
+		<div class="col-6">
+			<img th:src="@{/img/books-1842261.jpg}" class="img-fluid rounded float-left" alt="Responsive image"
+				width="800px" height="800px">
+		</div>
+		<div class="col-6">
+			<img th:src="@{/img/books-5682442.jpg}" class="img-fluid rounded" alt="Responsive image" width="800px"
+				height="800px">
+		</div>
+	</div>
+
+	<footer th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+
+</html>

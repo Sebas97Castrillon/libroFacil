@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/principal :: head}"></head>
+
+<body>
+	<nav th:replace="~{plantillas/principal :: nav}"></nav>
+	<div th:replace="~{plantillas/principal :: mensajes}"></div>
+
+	<div class="container-fluid py-4 col-9">
+		<div class="card text-white bg-secondary mb-3">
+			<div class="card-header bg-dark text-white">
+				<h3 class="text-white" th:text="${titulo}"></h3>
+			</div>
+			<div class="card-body">
+
+				<form th:action="@{/libreria/agregarusuario}" th:object="${usuario}" method="post"
+					enctype="multipart/form-data">
+
+					<div class="form-group">
+						<label>Identificación</label>
+						<input type="text" th:field="*{identificacion}" class="form-control form-control" />
+						<small class="form-text text-white" th:if="${#fields.hasErrors('identificacion')}"
+							th:errors="*{identificacion}"></small>
+					</div>
+
+					<div class="form-group">
+						<label>Nombres</label>
+						<input type="text" th:field="*{nombres}" class="form-control form-control" />
+						<small class="form-text text-white" th:if="${#fields.hasErrors('nombres')}"
+							th:errors="*{nombres}"></small>
+					</div>
+
+					<div class="form-group">
+						<label>Apellidos</label>
+						<input type="text" th:field="*{apellidos}" class="form-control form-control" />
+						<small class="form-text text-white" th:if="${#fields.hasErrors('apellidos')}"
+							th:errors="*{apellidos}"></small>
+					</div>
+
+					<div class="form-group">
+						<label>Teléfono</label>
+						<input type="text" th:field="*{telefono}" class="form-control form-control" />
+						<small class="form-text text-white" th:if="${#fields.hasErrors('telefono')}"
+							th:errors="*{telefono}"></small>
+					</div>
+
+					<div class="form-group">
+						<label>Correo electrónico</label>
+						<div class="input-group">
+							<input type="text" th:field="*{correoElectronico}" class="form-control form-control" />
+							<span class="input-group-text text-dark" id="basic-addon2">alguien@example.com</span>
+						</div>
+						<small class="form-text text-white" th:if="${#fields.hasErrors('correoElectronico')}"
+							th:errors="*{correoElectronico}"></small>
+					</div>
+
+					<div class="form-group">
+						<label>Fecha ingreso</label>
+						<input type="text" th:field="*{fechaIngreso}" class="form-control form-control"
+							placeholder="aaaa/mm/dd" />
+						<small class="form-text text-white" th:if="${#fields.hasErrors('fechaIngreso')}"
+							th:errors="*{fechaIngreso}"></small>
+					</div>
+
+					<div class="form-group">
+						<label>Disponibilidad del usuario</label>
+						<div class="form-check">
+							<input type="checkbox" th:field="*{activo}" class="form-check-input" />
+							<label class="form-check-label" for="activo">Activo?</label>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="file">Foto</label>
+						<input type="file" name="file" class="form-group form-group-sm">
+					</div>
+
+
+					<div>
+						<input type="submit" th:value="${accion} + ' usuario'" class="btn btn-success" />
+						<a class="btn btn-dark" th:href="@{/libreria/listarusuarios}">cancelar</a>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text="${msg}"></title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/all.min.css}" />
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nav nav-pills" th:fragment="nav">
+		<div class="pr-5"> <a class="navbar-brand" th:href="@{/}">Librería Libro Fácil</a></div>
+
+		<div class="pr-5"><a class="navbar-brand" th:href="@{/libreria/listarusuarios}">Usuarios</a></div>
+		<div class="pr-5"><a class="navbar-brand" th:href="@{/libreria/listarlibros}">Libros</a></div>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item" sec:authorize="not isAuthenticated()">
+					<a th:href="@{/login}" class="btn btn-primary">Ingresar</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="dropdown show navbar" sec:authorize="isAuthenticated()">
+			<a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span sec:authentication="name"></span>
+			</a>
+
+			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+				<button class="dropdown-item">Usuario: <i sec:authentication="name"></i></button>
+				<button class="dropdown-item">Roles: <i sec:authentication="principal.authorities"></i></button>
+				<form method="post" th:action="@{/logout}" id="frmSalir">
+					<button class="dropdown-item" onclick="document.querySelector('#frmSalir').submit()"
+						type="submit">Salir</button>
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				</form>
+			</div>
+		</div>
+	</nav>
+	<div class="container-fluid p-2" th:fragment="mensajes">
+		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+		<div class="alert alert-success" th:if="${info != null}" th:text="${info}"></div>
+	</div>
+	<footer class="text-center text-white" style="background-color: #caced1;" th:fragment="footer">
+		<div class="container p-4">
+			<section class="">
+				<div class="row">
+					<div class="col-lg-2 col-md-12 mb-4 mb-md-0">
+						<div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+							<img th:src="@{/img/apple-256261_1920.jpg}" class="w-100" />
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-12 mb-4 mb-md-0">
+						<div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+							<img th:src="@{/img/books-1246674_1920.jpg}" class="w-100" />
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-12 mb-4 mb-md-0">
+						<div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+							<img th:src="@{/img/books-4305459_1920.jpg}" class="w-100" />
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-12 mb-4 mb-md-0">
+						<div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+							<img th:src="@{/img/books-5615562_1920.jpg}" class="w-100" />
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-12 mb-4 mb-md-0">
+						<div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+							<img th:src="@{/img/glasses-1052010_1920.jpg}" class="w-100" />
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-12 mb-4 mb-md-0">
+						<div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+							<img th:src="@{/img/skull-1193784_1920.jpg}" class="w-100" />
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2023 Desarrollo Web:
+			<a class="text-white">Librería Libro Fácil</a>
+		</div>
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/popper.min.js}"></script>
+		<script th:src="@{/js/jquery-ui.min.js}"></script>
+	</footer>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+	<nav th:fragment="pager">
+		<ul class="pagination pagination-sm justify-content-center">
+			<li class="page-item" th:class="${pageRender.first ? 'page-item disabled' : 'page-item'}">
+				<span class="page-link material-icons" th:if="${pageRender.first}">first_page</span>
+				<a class="page-link material-icons" th:if="${not pageRender.first}" th:href="@{${pageRender.url}(pag=0)}">first_page</a>
+			</li>
+	
+			<li class="page-item" th:class="${not pageRender.hasPrevious ? 'page-item disabled' : 'page-item'}">
+				<span class="page-link material-icons" th:if="${not pageRender.hasPrevious}">chevron_left</span>
+				<a class="page-link material-icons" th:if="${pageRender.hasPrevious}" th:href="@{${pageRender.url}(pag=${pageRender.paginaActual - 2})}">chevron_left</a>
+			</li>
+			
+			<li class="page-item" th:each="item : ${pageRender.paginas}" th:class="${item.actual ? 'page-item active' : 'page-item'}">
+				<span class="page-link" th:if="${item.actual}" th:text="${item.numero}"></span>
+				<a class="page-link" th:href="@{${pageRender.url}(pag=${item.numero - 1})}" 
+					th:if="${not item.actual}" th:text="${item.numero}"></a>
+			</li>
+
+			<li class="page-item" th:class="${not pageRender.hasNext ? 'page-item disabled' : 'page-item'}">
+				<span class="page-link material-icons" th:if="${not pageRender.hasNext}">chevron_right</span>
+				<a class="page-link material-icons" th:if="${pageRender.hasNext}" th:href="@{${pageRender.url}(pag=${pageRender.paginaActual})}">chevron_right</a>
+			</li>			
+			
+			<li class="page-item" th:class="${pageRender.last ? 'page-item disabled' : 'page-item'}">
+				<span class="page-link material-icons" th:if="${pageRender.last}">last_page</span>
+				<a class="page-link material-icons" th:if="${not pageRender.last}" th:href="@{${pageRender.url}(pag=${pageRender.totalPaginas - 1})}">last_page</a>
+			</li>			
+		</ul>
+	</nav>
+</body>
+</html>

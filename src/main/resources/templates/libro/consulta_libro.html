@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/principal :: head}"></head>
+<style>
+	.list-group-item {
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+</style>
+
+<body>
+	<nav th:replace="~{plantillas/principal :: nav}"></nav>
+	<div th:replace="~{plantillas/principal :: mensajes}"></div>
+
+	<div class="container-fluid py-4 col-sm-8">
+
+		<div class="card bg-light">
+			<div class="card-header bg-dark text-white">
+				<h3 th:text="${titulo}"></h3>
+			</div>
+			<div class="card-body">
+				<img class="img-thumbnail rounded float-left" style="max-width: 25%;"
+					th:src="@{'/uploads/' + ${libro.caratula}}" th:alt="${libro.caratula}"
+					th:if="${#strings.length(libro.caratula) > 0 }">
+				<ul class="list-group">
+					<li class="list-group-item"><b class="text-dark">Título: </b> <i th:text="${libro.titulo}"></i>
+					<li class="list-group-item"><b class="text-dark">Edición: </b> <i th:text="${libro.edicion}"></i>
+					<li class="list-group-item"><b class="text-dark">Tema: </b> <i th:text="${libro.tema}"></i>
+					</li>
+					<li class="list-group-item"><b class="text-dark">Año: </b> <i th:text="${libro.anio}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Paginas: </b> <i
+							th:text="${#numbers.formatInteger(libro.nroPaginas, 1, 'COMMA')}"></i>
+					</li>
+					</li>
+					<li class="list-group-item"><b class="text-dark">ISBN: </b> <i th:text="${libro.isbn}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Editorial: </b> <i th:text="${libro.editorial.nombreCompleto}"></i>
+				</ul>
+
+				<div class="text-right mt-3">
+					<a href="#" onclick="history.back()" class="btn btn-outline-secondary">&laquo; Regresar</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+
+</html>

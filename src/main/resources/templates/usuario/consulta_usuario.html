@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{plantillas/principal :: head}"></head>
+<style>
+	.list-group-item {
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+</style>
+
+<body>
+	<nav th:replace="~{plantillas/principal :: nav}"></nav>
+	<div th:replace="~{plantillas/principal :: mensajes}"></div>
+
+	<div class="container-fluid py-4 col-sm-8">
+
+		<div class="card bg-light">
+			<div class="card-header bg-dark text-white">
+				<h3 th:text="${titulo}"></h3>
+			</div>
+			<div class="card-body">
+				<img class="img-thumbnail rounded float-left" style="max-width: 25%;"
+					th:src="@{'/uploads/' + ${usuario.foto}}" th:alt="${usuario.foto}"
+					th:if="${#strings.length(usuario.foto) > 0 }">
+				<ul class="list-group">
+					<li class="list-group-item"><b class="text-dark">Identificación: </b> <i
+							th:text="${usuario.identificacion}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Nombres: </b> <i
+							th:text="${usuario.nombres}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Apellidos: </b> <i
+							th:text="${usuario.apellidos}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Activo: </b><i><span
+								th:text="${(usuario.activo ? 'Si' : 'No')}"></span></i></li>
+					<li class="list-group-item"><b class="text-dark">Telefono: </b> <i
+							th:text="${usuario.telefono}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Correo Electrónico: </b> <i
+							th:text="${usuario.correoElectronico}"></i></li>
+					<li class="list-group-item"><b class="text-dark">Fecha de Ingreso: </b> <i
+							th:text="${#dates.format(usuario.fechaIngreso, 'dd/MM/yyyy')}"></i></li>
+				</ul>
+
+				<table class="table table-sm table-striped mt-4" th:if="${not #lists.isEmpty(usuario.prestamos)}">
+					<tr>
+						<th class="text-dark" >Ejemplar</th>
+							<th class="text-dark" >Editorial</th>
+							<th class="text-dark" >Fecha Venta</th>
+							<th class="text-dark" >Fecha Devolución</th>
+						<th class="text-center">Accción</th>
+					</tr>
+					<tr th:each="prestamo : ${usuario.prestamos}">
+						<td class="text-dark" th:text="${prestamo.ejemplar.libro.titulo}"></td>
+						<td class="text-dark" th:text="${prestamo.ejemplar.libro.editorial.nombreCompleto}"></td>
+						<td class="text-dark" th:text="${#dates.format(prestamo.fechaVenta, 'dd/MM/yyyy')}"></td>
+						<td th:class="text-dark" th:text="${#dates.format(prestamo.fechaDevolucion, 'dd/MM/yyyy')}"></td>
+						<td class="text-center">
+							<a th:href="@{/libreria/consultarprestamo/} + ${prestamo.id}" th:text="'Consultar'"
+								class="btn btn-dark btn-sm"></a>&nbsp;
+							<a th:href="@{/libreria/eliminarprestamo/} + ${prestamo.id}" th:text="'Eliminar'"
+								class="btn btn-danger btn-sm"
+								onclick="return confirm('Esta seguro de eliminar el prestamo?')"></a>
+						</td>
+					</tr>
+
+				</table>
+
+				<div class="text-right mt-3">
+					<a th:href="@{/libreria/nuevoprestamo/} + ${usuario.id}" sec:authorize="hasRole('ROLE_ADMIN')"
+						class="btn btn-success">Nuevo
+						Prestamo</a>
+					<a class="btn btn-outline-secondary" th:href="@{/libreria/listarusuarios}">Regresar</a>
+				</div>
+
+
+			</div>
+		</div>
+		<div th:text="'El usuario actual no tiene prestamos'" th:if="${#lists.isEmpty(usuario.prestamos)}"
+			class="alert alert-info mt-4"></div>
+	</div>
+</body>
+
+</html>

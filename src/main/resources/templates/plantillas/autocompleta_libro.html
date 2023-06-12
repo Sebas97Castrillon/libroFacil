@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<body>
+  <script th:fragment="script">
+    $(document).ready(function () {
+      $("#buscar_libro").autocomplete({
+        source: function (request, response) {
+          $.ajax({
+            url: "/libreria/cargarlibros/" + request.term,
+            dataType: "json",
+            data: { term: request.term },
+            type: "GET",
+            success: function (data) {
+              response($.map(data, function (item) {
+                return {
+                  value: item.id,
+                  label: item.titulo,
+                  edicion: item.edicion,
+                  tema: item.tema,
+                  anio: item.anio,
+                  nroPaginas: item.nroPaginas,
+                };
+              }));
+            },
+          });
+        },
+        select: function (event, ui) {
+
+          if (utils.hasProducto(ui.item.value)) {
+            return false;
+          }
+
+          let linea = $("#plantilla_detalle").html();
+          linea = linea.replace(/{ID}/g, ui.item.value);
+          linea = linea.replace(/{TITULO}/g, ui.item.label);
+          linea = linea.replace(/{EDICION}/g, ui.item.edicion);
+          linea = linea.replace(/{TEMA}/g, ui.item.tema);
+          linea = linea.replace(/{ANIO}/g, ui.item.anio);
+          linea = linea.replace(/{NUMEROPAGINAS}/g, ui.item.nroPaginas);
+          $("#cargar_detalle tbody").append(linea);
+
+          return false;
+        },
+      });
+      $("form").submit(function () {
+        $("#plantilla_detalle").remove();
+        return
+      });
+    });
+
+    let utils = {
+      hasProducto: function (id) {
+        let res = false;
+        $('input[name="detalle_id[]"]').each(function () {
+          if (parseInt(id) == parseInt($(this).val())) {
+            res = true;
+          }
+        });
+        return res;
+      },
+      eliminarDetalle: function (id) {
+        $("#fila_" + id).remove();
+        this.calcularTotalFactura();
+      },
+    }
+
+
+  </script>
+</body>
+
+</html>

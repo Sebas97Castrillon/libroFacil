@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{plantillas/principal :: head}"></head>
+
+<body>
+    <nav th:replace="~{plantillas/principal :: nav}"></nav>
+    <div th:replace="~{plantillas/principal :: mensajes}"></div>
+
+    <div class="container-fluid py-4 col-9">
+        <div class="card bg-light">
+            <div class="card-header bg-dark text-white">
+                <h3 class="text-white" th:text="${titulo}"></h3>
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/libreria/nuevolibro}"
+                        class="btn btn-success">Libro nuevo</a>
+                </div>
+                <table class="table table-striped table-sm" table-dark>
+                    <tr>
+                        <th sec:authorize="hasRole('ROLE_USER')">Id:</th>
+                        <th >Título:</th>
+                        <th>Edición:</th>
+                        <th>Tema:</th>
+                        <th>Paginas:</th>
+                        <th>ISBN:</th>
+                        <th sec:authorize="hasRole('ROLE_ADMIN')" colspan="2" class="text-center">Acciones</th>
+                    </tr>
+
+                    <tr th:each="libro : ${libros}">
+                        <td sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/libreria/consultarlibro/} + ${libro.id}"
+                                class="btn btn-sm btn-secondary"
+                                th:text="${#numbers.formatInteger(libro.id, 4)}"></a></td>
+                        <td th:text="${libro.titulo}"></td>
+                        <td th:text="${libro.edicion}"></td>
+                        <td th:text="${libro.tema}"></td>
+                        <td th:text="${#numbers.formatInteger(libro.nroPaginas, 1, 'POINT')}"></td>
+                        <td th:text="${libro.isbn}"></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')" class="text-center">
+                            <a th:href="@{/libreria/modificarlibro/} + ${libro.id}"
+                                class="btn btn-sm btn-dark">Modificar</a>
+                        </td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')" class="text-center"> <a onclick="return confirm('Está seguro ?')"
+                                th:href="@{/libreria/eliminarlibro/} + ${libro.id}"
+                                class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                </table>
+                <footer class="text-secondary" th:text="'Libros en la Base de datos: ' + ${cantidad}"></footer>
+                <nav th:replace="~{plantillas/paginador :: pager}"></nav>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+
+</html>
